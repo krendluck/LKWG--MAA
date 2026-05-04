@@ -7,7 +7,6 @@ class AutoLaunchAct(CustomAction):
     """自动登录 - 点击识别到的登录按钮中心"""
 
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
-        print(1)
         reco_detail = argv.reco_detail
         if reco_detail is not None and reco_detail.hit:
             box = reco_detail.box
