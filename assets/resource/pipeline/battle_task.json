@@ -1,57 +1,14 @@
 {
     "Auto_LaunchEntry": {
-        "recognition": "TemplateMatch",
-        "template": "Custom/Lanuch.png",
-        "roi": [
-            544,
-            496,
-            192,
-            85
-        ],
-        "threshold": 0.7,
-        "action": "Click",
-        "target": true,
-        "post_delay": 500,
-        "timeout": 10000,
-        "next": [
-            "AutoLaunch_Click",
-            "Launch_End"
-        ],
-        "on_error": []
-    },
-    "AutoLaunch_Click": {
         "recognition": "Custom",
-        "custom_recognition": "AutoLaunchReco",
+        "custom_recognition": "AutoLaunch_Check",
+        "custom_recognition_param": {"template":"Custom/Lanuch.png","roi":[544,496,192,85],"threshold":0.7},
         "action": "Custom",
         "custom_action": "AutoLaunchAct",
         "post_delay": 500,
-        "next": [
-            "Launch_Check"
-        ]
+        "timeout": 10000
     },
-    "Launch_Check": {
-        "recognition": "TemplateMatch",
-        "template": "Custom/Lanuch.png",
-        "roi": [
-            544,
-            496,
-            192,
-            85
-        ],
-        "threshold": 0.7,
-        "timeout": 2000,
-        "next": [
-            "AutoLaunch_Click",
-            "Launch_End"
-        ]
-    },
-    "Launch_End": {
-        "recognition": "Custom",
-        "custom_recognition": "LaunchCheckReco",
-        "action": "Custom",
-        "custom_action": "LaunchCheckAct",
-        "next": []
-    },
+
     "Focus_EnergyEntry": {
         "recognition": "TemplateMatch",
         "template": "Battle/Energy.png",
@@ -69,8 +26,7 @@
         "next": "FocusEnergy_Click"
     },
     "FocusEnergy_Click": {
-        "recognition": "Custom",
-        "custom_recognition": "FocusEnergyReco",
+        "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "FocusEnergyAct",
         "post_delay": 500,
@@ -123,28 +79,23 @@
     },
     "AutoReleasePet_Entry": {
         "recognition": "Custom",
-        "custom_recognition": "AutoReleasePetReco",
-        "custom_recognition_param": {
-            "roi": [
-                72,
-                123,
-                90,
-                402
-            ],
-            "threshold": 0.3,
-            "count": 5,
-            "battle_roi": [
-                920,
-                613,
-                91,
-                92
-            ],
-            "battle_threshold": 0.7
-        },
+        "custom_recognition": "AutoReleasePet_recognition",
         "action": "Custom",
-        "custom_action": "AutoReleasePetAction",
+        "custom_action": "AutoReleasePetAct",
+        "pre_delay": 500,
+        "next": "AutoReleasePet_Loop",
+        "attach": {"polling_interval": 1}
+    },
+    "AutoReleasePet_Loop": {
+        "recognition": "DirectHit",
         "post_delay": 500,
-        "timeout": -1,
         "next": "AutoReleasePet_Entry"
+    },
+    "MouseLongPressEntry": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "MouseLongPress",
+        "attach": {"key": "c"},
+        "next": []
     }
 }

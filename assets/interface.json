@@ -30,7 +30,7 @@
     "agent": {
         "child_exec": "python",
         "child_args": [
-            "./agent/main.py"
+            "../agent/main.py"
         ]
     },
     "task": [
@@ -55,7 +55,17 @@
         },
         {
             "name": "自动放宠",
-            "entry": "AutoReleasePet_Entry"
+            "entry": "AutoReleasePet_Entry",
+            "option": [
+                "轮询间隔"
+            ]
+        },
+        {
+            "name": "鼠标长按",
+            "entry": "MouseLongPressEntry",
+            "option": [
+                "映射按键"
+            ]
         }
     ],
     "option": {
@@ -136,6 +146,52 @@
                     }
                 }
             ]
+        },
+        "轮询间隔":{
+            "type": "input",
+            "inputs": [
+                {
+                    "name": "轮询间隔",
+                    "label": "轮询间隔",
+                    "default": "1",
+                    "pipeline_type": "int",
+                    "verify": "^[1-9]$",
+                    "pattern_msg": "输入轮询间隔1-9s"
+                },
+                {
+                    "name": "检测间隔",
+                    "label": "检测间隔",
+                    "default": "500",
+                    "pipeline_type": "int",
+                    "verify": "^[1-9][0-9]*$",
+                    "pattern_msg": "请输入轮询间隔(ms),为正整数,例如500"
+                }
+            ],
+            "pipeline_override": {
+                "AutoReleasePet_Entry":{
+                    "attach": {"polling_interval" : "{轮询间隔}"},
+                    "pre_delay": "{检测间隔}"
+                }
+            }
+        },
+        "映射按键": {
+            "type": "input",
+            "label": "鼠标长按设置",
+            "inputs": [
+                {
+                    "name": "key",
+                    "label": "映射按键(字母/数字/空格)",
+                    "default": "c",
+                    "pipeline_type": "string",
+                    "verify": "^[0-9a-zA-Z ]$",
+                    "pattern_msg": "请输入一个按键(字母、数字或空格)"
+                }
+            ],
+            "pipeline_override": {
+                "MouseLongPressEntry": {
+                    "attach": {"key": "{key}"}
+                }
+            }
         }
-    }
+    }    
 }
