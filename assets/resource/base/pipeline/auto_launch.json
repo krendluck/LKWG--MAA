@@ -1,0 +1,11 @@
+{
+    "Auto_LaunchEntry": {
+        "recognition": "Custom",
+        "custom_recognition": "AutoLaunch_Check",
+        "custom_recognition_param": {"template":"Custom/Launch.png","roi":[544,496,192,85],"threshold":0.7},
+        "action": "Custom",
+        "custom_action": "AutoLaunchAct",
+        "post_delay": 500,
+        "timeout": 10000
+    }
+}

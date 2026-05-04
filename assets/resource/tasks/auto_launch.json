@@ -1,0 +1,10 @@
+{
+    "task": [
+        {
+            "name": "自动登录",
+            "entry": "Auto_LaunchEntry",
+            "group": ["daily"]
+        }
+    ],
+    "option": {}
+}

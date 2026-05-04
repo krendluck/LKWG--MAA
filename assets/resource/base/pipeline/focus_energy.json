@@ -1,0 +1,29 @@
+{
+    "Focus_EnergyEntry": {
+        "recognition": "TemplateMatch",
+        "template": "Battle/Energy.png",
+        "roi": [
+            11,
+            583,
+            102,
+            101
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": true,
+        "post_delay": 300,
+        "timeout": -1,
+        "next": "FocusEnergy_Click"
+    },
+    "FocusEnergy_Click": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "FocusEnergyAct",
+        "post_delay": 500,
+        "next": "FocusEnergy_LoopWait"
+    },
+    "FocusEnergy_LoopWait": {
+        "post_delay": 2000,
+        "next": "Focus_EnergyEntry"
+    }
+}

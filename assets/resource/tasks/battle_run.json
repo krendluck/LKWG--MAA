@@ -1,0 +1,67 @@
+{
+    "task": [
+        {
+            "name": "战斗脱离",
+            "entry": "Battle_RunEntry",
+            "option": [
+                "战斗脱离",
+                "脱离方式"
+            ],
+            "group": ["daily"]
+        }
+    ],
+    "option": {
+        "战斗脱离": {
+            "type": "select",
+            "default_case": "只脱离一次",
+            "cases": [
+                {
+                    "name": "只脱离一次",
+                    "label": "只脱离一次",
+                    "pipeline_override": {
+                        "Confirm_Yes": {
+                            "next": []
+                        }
+                    }
+                },
+                {
+                    "name": "后台持续检测",
+                    "label": "后台持续检测",
+                    "pipeline_override": {
+                        "Confirm_Yes": {
+                            "next": [
+                                "Battle_RunEntry"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "脱离方式": {
+            "type": "select",
+            "default_case": "点击脱离",
+            "cases": [
+                {
+                    "name": "点击脱离",
+                    "label": "点击脱离",
+                    "pipeline_override": {
+                        "Battle_RunEntry": {
+                            "action": "Click",
+                            "target": true
+                        }
+                    }
+                },
+                {
+                    "name": "按键 ESC",
+                    "label": "按键 ESC",
+                    "pipeline_override": {
+                        "Battle_RunEntry": {
+                            "action": "ClickKey",
+                            "key": 27
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

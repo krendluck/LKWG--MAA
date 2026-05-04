@@ -5,7 +5,9 @@
                 "/assets/resource/**/*.json",
                 "/install/resource/**/*.json",
                 "/assets/resource/**/*.jsonc",
-                "/install/resource/**/*.jsonc"
+                "/install/resource/**/*.jsonc",
+                "!/assets/resource/tasks/**/**.json",
+                "!/install/resource/tasks/**/**.json"
             ],
             "url": "/deps/tools/pipeline.schema.json"
         },
@@ -15,6 +17,13 @@
                 "/install/interface.json"
             ],
             "url": "/deps/tools/interface.schema.json"
+        },
+        {
+            "fileMatch": [
+                "/assets/resource/tasks/**/*.json",
+                "/install/resource/tasks/**/*.json"
+            ],
+            "url": "/deps/tools/interface_import.schema.json"
         },
         {
             "fileMatch": [

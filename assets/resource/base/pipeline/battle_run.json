@@ -1,0 +1,43 @@
+{
+    "BattleRun_OnceEntry": {
+        "recognition": "TemplateMatch",
+        "template": "Battle/ESC.png",
+        "roi": [
+            920,
+            613,
+            91,
+            92
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": true,
+        "post_delay": 500,
+        "timeout": -1,
+        "next": "Confirm_Yes"
+    },
+    "Battle_RunEntry": {
+        "recognition": "TemplateMatch",
+        "template": "Battle/ESC.png",
+        "roi": [
+            920,
+            613,
+            91,
+            92
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": true,
+        "post_delay": 500,
+        "timeout": -1,
+        "next": "Confirm_Yes"
+    },
+    "Confirm_Yes": {
+        "action": "Click",
+        "target": [
+            743,
+            594
+        ],
+        "post_delay": 500,
+        "next": "Battle_RunEntry"
+    }
+}

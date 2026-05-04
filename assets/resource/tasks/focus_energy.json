@@ -1,0 +1,40 @@
+{
+    "task": [
+        {
+            "name": "自动聚能",
+            "entry": "Focus_EnergyEntry",
+            "option": [
+                "聚能方式"
+            ],
+            "group": ["daily"]
+        }
+    ],
+    "option": {
+        "聚能方式": {
+            "type": "select",
+            "default_case": "点击方式",
+            "cases": [
+                {
+                    "name": "按键 x",
+                    "label": "按键 x",
+                    "pipeline_override": {
+                        "Focus_EnergyEntry": {
+                            "action": "ClickKey",
+                            "key": 88
+                        }
+                    }
+                },
+                {
+                    "name": "点击方式",
+                    "label": "点击方式",
+                    "pipeline_override": {
+                        "Focus_EnergyEntry": {
+                            "action": "Click",
+                            "target": true
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

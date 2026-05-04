@@ -1,0 +1,16 @@
+{
+    "AutoReleasePet_Entry": {
+        "recognition": "Custom",
+        "custom_recognition": "AutoReleasePet_recognition",
+        "action": "Custom",
+        "custom_action": "AutoReleasePetAct",
+        "pre_delay": 500,
+        "next": "AutoReleasePet_Loop",
+        "attach": {"polling_interval": 1}
+    },
+    "AutoReleasePet_Loop": {
+        "recognition": "DirectHit",
+        "post_delay": 500,
+        "next": "AutoReleasePet_Entry"
+    }
+}

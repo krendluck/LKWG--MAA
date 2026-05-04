@@ -7,6 +7,7 @@ class AutoLaunchAct(CustomAction):
     """自动登录 - 点击识别到的登录按钮中心"""
 
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
+        print(1)
         reco_detail = argv.reco_detail
         if reco_detail is not None and reco_detail.hit:
             box = reco_detail.box
@@ -31,7 +32,6 @@ class AutoReleasePetAct(CustomAction):
     """自动放宠 - 读取识别结果中的按键码并发送"""
 
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
-        
         reco_detail = argv.reco_detail
         results = reco_detail.all_results
         detail = results[0].detail

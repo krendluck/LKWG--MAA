@@ -1,0 +1,41 @@
+{
+    "task": [
+        {
+            "name": "自动放宠",
+            "entry": "AutoReleasePet_Entry",
+            "option": [
+                "轮询间隔"
+            ],
+            "group": ["daily"]
+        }
+    ],
+    "option": {
+        "轮询间隔": {
+            "type": "input",
+            "inputs": [
+                {
+                    "name": "轮询间隔",
+                    "label": "轮询间隔(s)",
+                    "default": "1",
+                    "pipeline_type": "int",
+                    "verify": "^[1-9]$",
+                    "pattern_msg": "输入轮询间隔1-9s"
+                },
+                {
+                    "name": "检测间隔",
+                    "label": "检测间隔(ms)",
+                    "default": "500",
+                    "pipeline_type": "int",
+                    "verify": "^[1-9][0-9]*$",
+                    "pattern_msg": "请输入轮询间隔(ms),为正整数,例如500"
+                }
+            ],
+            "pipeline_override": {
+                "AutoReleasePet_Entry": {
+                    "attach": {"polling_interval": "{轮询间隔}"},
+                    "pre_delay": "{检测间隔}"
+                }
+            }
+        }
+    }
+}

@@ -23,149 +23,34 @@
         {
             "name": "桌面",
             "path": [
-                "resource"
+                "./resource/base"
             ]
         }
     ],
     "agent": {
         "child_exec": "python",
         "child_args": [
-            "./agent/main.py"
+            "-u",
+            "./../agent/main.py"
         ]
     },
-    "task": [
+
+    "task": [],
+    "group": [
         {
-            "name": "自动登录",
-            "entry": "Auto_LaunchEntry"
+            "name": "battle",
+            "label": "战斗"
         },
         {
-            "name": "自动聚能",
-            "entry": "Focus_EnergyEntry",
-            "option": [
-                "聚能方式"
-            ]
-        },
-        {
-            "name": "战斗脱离",
-            "entry": "Battle_RunEntry",
-            "option": [
-                "战斗脱离",
-                "脱离方式"
-            ]
-        },
-        {
-            "name": "自动放宠",
-            "entry": "AutoReleasePet_Entry",
-            "option": [
-                "轮询间隔"
-            ]
+            "name": "daily",
+            "label": "日常"
         }
     ],
-    "option": {
-        "聚能方式": {
-            "type": "select",
-            "default_case": "点击方式",
-            "cases": [
-                {
-                    "name": "按键 x",
-                    "label": "按键 x",
-                    "pipeline_override": {
-                        "Focus_EnergyEntry": {
-                            "action": "ClickKey",
-                            "key": 88
-                        }
-                    }
-                },
-                {
-                    "name": "点击方式",
-                    "label": "点击方式",
-                    "pipeline_override": {
-                        "Focus_EnergyEntry": {
-                            "action": "Click",
-                            "target": true
-                        }
-                    }
-                }
-            ]
-        },
-        "战斗脱离": {
-            "type": "select",
-            "default_case": "只脱离一次",
-            "cases": [
-                {
-                    "name": "只脱离一次",
-                    "label": "只脱离一次",
-                    "pipeline_override": {
-                        "Confirm_Yes": {
-                            "next": []
-                        }
-                    }
-                },
-                {
-                    "name": "后台持续检测",
-                    "label": "后台持续检测",
-                    "pipeline_override": {
-                        "Confirm_Yes": {
-                            "next": [
-                                "Battle_RunEntry"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "脱离方式": {
-            "type": "select",
-            "default_case": "点击脱离",
-            "cases": [
-                {
-                    "name": "点击脱离",
-                    "label": "点击脱离",
-                    "pipeline_override": {
-                        "Battle_RunEntry": {
-                            "action": "Click",
-                            "target": true
-                        }
-                    }
-                },
-                {
-                    "name": "按键 ESC",
-                    "label": "按键 ESC",
-                    "pipeline_override": {
-                        "Battle_RunEntry": {
-                            "action": "ClickKey",
-                            "key": 27
-                        }
-                    }
-                }
-            ]
-        },
-        "轮询间隔":{
-            "type": "input",
-            "inputs": [
-                {
-                    "name": "轮询间隔",
-                    "label": "轮询间隔",
-                    "default": "1",
-                    "pipeline_type": "int",
-                    "verify": "^[1-9]$",
-                    "pattern_msg": "输入轮询间隔1-9s"
-                },
-                {
-                    "name": "检测间隔",
-                    "label": "检测间隔",
-                    "default": "500",
-                    "pipeline_type": "int",
-                    "verify": "^[1-9][0-9]*$",
-                    "pattern_msg": "请输入轮询间隔(ms),为正整数,例如500"
-                }
-            ],
-            "pipeline_override": {
-                "AutoReleasePet_Entry":{
-                    "attach": {"polling_interval" : "{轮询间隔}"},
-                    "pre_delay": "{检测间隔}"
-                }
-            }
-        }
-    }    
+    "option": {},
+    "import": [
+        "resource/tasks/auto_launch.json",
+        "resource/tasks/focus_energy.json",
+        "resource/tasks/battle_run.json",
+        "resource/tasks/auto_release_pet.json"
+    ]    
 }
