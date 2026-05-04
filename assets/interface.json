@@ -59,13 +59,6 @@
             "option": [
                 "轮询间隔"
             ]
-        },
-        {
-            "name": "鼠标长按",
-            "entry": "MouseLongPressEntry",
-            "option": [
-                "映射按键"
-            ]
         }
     ],
     "option": {
@@ -171,25 +164,6 @@
                 "AutoReleasePet_Entry":{
                     "attach": {"polling_interval" : "{轮询间隔}"},
                     "pre_delay": "{检测间隔}"
-                }
-            }
-        },
-        "映射按键": {
-            "type": "input",
-            "label": "鼠标长按设置",
-            "inputs": [
-                {
-                    "name": "key",
-                    "label": "映射按键(字母/数字/空格)",
-                    "default": "c",
-                    "pipeline_type": "string",
-                    "verify": "^[0-9a-zA-Z ]$",
-                    "pattern_msg": "请输入一个按键(字母、数字或空格)"
-                }
-            ],
-            "pipeline_override": {
-                "MouseLongPressEntry": {
-                    "attach": {"key": "{key}"}
                 }
             }
         }
