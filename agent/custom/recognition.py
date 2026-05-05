@@ -67,6 +67,21 @@ class AutoReleasePetRecognition(CustomRecognition):
     ) -> CustomRecognition.AnalyzeResult:
         global _switch_key_index
 
+        battle_result = context.run_recognition(
+            "BattleDetect",
+            argv.image,
+            pipeline_override={"BattleDetect": {
+                "recognition": "TemplateMatch",
+                "template": "Battle/ESC.png",
+                "roi": [920, 613, 91, 92],
+                "threshold": 0.7,
+            }},
+        )
+        if battle_result is not None and battle_result.hit:
+            print("检测到进入战斗，执行战斗脱离")
+            context.run_task("Battle_RunEntry")
+            time.sleep(1)
+
         node_obj = context.get_node_object("AutoReleasePet_Entry")
         attach = getattr(node_obj, "attach", {}) if node_obj else {}
         polling_interval = attach.get("polling_interval")
