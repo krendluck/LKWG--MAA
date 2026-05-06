@@ -30,11 +30,9 @@
     "agent": {
         "child_exec": "python",
         "child_args": [
-            "-u",
-            "./agent/main.py"
+            "../agent/main.py"
         ]
     },
-
     "task": [],
     "group": [
         {
@@ -44,6 +42,10 @@
         {
             "name": "daily",
             "label": "日常"
+        },
+        {
+            "name": "demo",
+            "label": "测试"
         }
     ],
     "option": {},
@@ -51,6 +53,7 @@
         "resource/tasks/auto_launch.json",
         "resource/tasks/focus_energy.json",
         "resource/tasks/battle_run.json",
-        "resource/tasks/auto_release_pet.json"
-    ]    
+        "resource/tasks/auto_release_pet.json",
+        "resource/tasks/stone_detect.json"
+    ]
 }

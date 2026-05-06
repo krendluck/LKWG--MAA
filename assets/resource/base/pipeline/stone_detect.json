@@ -1,0 +1,15 @@
+{
+    "StoneDetect": {
+        "recognition": "Custom",
+        "custom_recognition": "StoneRecognition_Entry",
+        "action": "Custom",
+        "custom_action": "StoneDetectAct",
+        "post_delay": 500,
+        "next": "StoneDetect_Loop"
+    },
+    "StoneDetect_Loop": {
+        "recognition": "DirectHit",
+        "post_delay": 500,
+        "next": "StoneDetect"
+    }
+}

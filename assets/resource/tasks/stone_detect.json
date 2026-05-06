@@ -1,0 +1,10 @@
+{
+    "task": [
+        {
+            "name": "石头检测",
+            "entry": "StoneDetect",
+            "group": ["demo"]
+        }
+    ],
+    "option": {}
+}

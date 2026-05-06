@@ -18,28 +18,49 @@ from datetime import datetime
 from pathlib import Path
 
 
+class _Logger:
+    def __init__(self, path):
+        self.path = path
+        self._file = None
+
+    def write(self, msg):
+        if self._file is None:
+            self._file = open(self.path, "a", encoding="utf-8")
+        self._file.write(msg)
+        self._file.flush()
+
+    def flush(self):
+        if self._file:
+            self._file.flush()
+
+    def close(self):
+        if self._file:
+            self._file.close()
+            self._file = None
+
+
+class _TeeStream:
+    def __init__(self, logger, original):
+        self._logger = logger
+        self._original = original
+
+    def write(self, msg):
+        self._logger.write(msg)
+        if self._original:
+            self._original.write(msg)
+            self._original.flush()
+
+    def flush(self):
+        self._logger.flush()
+        if self._original:
+            self._original.flush()
+
+
 def setup_logging():
     log_dir = Path(__file__).parent / "logs"
     log_dir.mkdir(exist_ok=True)
     log_file = log_dir / f"agent_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-
-    class Logger:
-        def __init__(self, path):
-            self.path = path
-            self._file = None
-
-        def write(self, msg):
-            if self._file is None:
-                self._file = open(self.path, "a", encoding="utf-8")
-            self._file.write(msg)
-            self._file.flush()
-
-        def close(self):
-            if self._file:
-                self._file.close()
-                self._file = None
-
-    logger = Logger(log_file)
+    logger = _Logger(log_file)
     return logger, log_file
 
 
@@ -66,9 +87,11 @@ def log_env_info(logger):
 
 
 def main():
+    _original_stdout = sys.stdout
+    _original_stderr = sys.stderr
     logger, log_file = setup_logging()
-    sys.stdout = logger
-    sys.stderr = logger
+    sys.stdout = _TeeStream(logger, _original_stdout)
+    sys.stderr = _TeeStream(logger, _original_stderr)
 
     try:
         log_env_info(logger)
