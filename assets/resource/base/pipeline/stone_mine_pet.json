@@ -1,0 +1,16 @@
+{
+    "StoneMinePet_Entry": {
+        "recognition": "Custom",
+        "custom_recognition": "StoneMinePet_recognition",
+        "action": "Custom",
+        "custom_action": "StoneMinePetAct",
+        "pre_delay": 500,
+        "next": "StoneMinePet_Loop",
+        "attach": {"hold_duration": 1}
+    },
+    "StoneMinePet_Loop": {
+        "recognition": "DirectHit",
+        "post_delay": 500,
+        "next": "StoneMinePet_Entry"
+    }
+}

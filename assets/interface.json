@@ -54,6 +54,7 @@
         "resource/tasks/focus_energy.json",
         "resource/tasks/battle_run.json",
         "resource/tasks/auto_release_pet.json",
-        "resource/tasks/stone_detect.json"
+        "resource/tasks/stone_detect.json",
+        "resource/tasks/stone_mine_pet.json"
     ]
 }

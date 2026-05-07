@@ -1,0 +1,32 @@
+{
+    "task": [
+        {
+            "name": "挖矿放宠",
+            "entry": "StoneMinePet_Entry",
+            "option": [
+                "按住时长"
+            ],
+            "group": ["daily"]
+        }
+    ],
+    "option": {
+        "按住时长": {
+            "type": "input",
+            "inputs": [
+                {
+                    "name": "按住时长",
+                    "label": "按住时长(s)",
+                    "default": "2",
+                    "pipeline_type": "int",
+                    "verify": "^[1-9][0-9]*$",
+                    "pattern_msg": "请输入按住时长(ms),为正整数,例如2"
+                }
+            ],
+            "pipeline_override": {
+                "StoneMinePet_Entry": {
+                    "attach": {"hold_duration": "{按住时长}"}
+                }
+            }
+        }
+    }
+}
