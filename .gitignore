@@ -452,3 +452,6 @@ tools/ImageCropper/**/*.png
 
 config
 debug
+
+# Agent junction (files tracked under agent/)
+assets/agent/
