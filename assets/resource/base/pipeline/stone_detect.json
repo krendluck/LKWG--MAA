@@ -5,6 +5,7 @@
         "action": "Custom",
         "custom_action": "StoneDetectAct",
         "post_delay": 500,
+        "timeout": -1,
         "next": "StoneDetect_Loop"
     },
     "StoneDetect_Loop": {

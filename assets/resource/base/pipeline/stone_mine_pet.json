@@ -5,6 +5,7 @@
         "action": "Custom",
         "custom_action": "StoneMinePetAct",
         "pre_delay": 500,
+        "timeout": -1,
         "next": "StoneMinePet_Loop",
         "attach": {"hold_duration": 1}
     },

@@ -33,16 +33,22 @@ class AutoLaunchRecognition(CustomRecognition):
         threshold = param["threshold"]
         roi = param["roi"]
 
-        reco_detail = context.run_recognition(
-            "LauchCheck",
-            argv.image,
-            pipeline_override={"LauchCheck": {
-                "recognition": "TemplateMatch",
-                "template": template,
-                "roi": roi,
-                "threshold": threshold,
-            }},
-        )
+        try:
+            reco_detail = context.run_recognition(
+                "LauchCheck",
+                argv.image,
+                pipeline_override={"LauchCheck": {
+                    "recognition": "TemplateMatch",
+                    "template": template,
+                    "roi": roi,
+                    "threshold": threshold,
+                }},
+            )
+        except Exception:
+            return CustomRecognition.AnalyzeResult(
+                box=None,
+                detail=json.dumps({"hit": False}),
+            )
         if reco_detail is not None and reco_detail.hit:
             score = 0.0
             if reco_detail.all_results:
@@ -67,16 +73,19 @@ class AutoReleasePetRecognition(CustomRecognition):
     ) -> CustomRecognition.AnalyzeResult:
         global _switch_key_index
 
-        battle_result = context.run_recognition(
-            "BattleDetect",
-            argv.image,
-            pipeline_override={"BattleDetect": {
-                "recognition": "TemplateMatch",
-                "template": "Battle/ESC.png",
-                "roi": [920, 613, 91, 92],
-                "threshold": 0.7,
-            }},
-        )
+        try:
+            battle_result = context.run_recognition(
+                "BattleDetect",
+                argv.image,
+                pipeline_override={"BattleDetect": {
+                    "recognition": "TemplateMatch",
+                    "template": "Battle/ESC.png",
+                    "roi": [920, 613, 91, 92],
+                    "threshold": 0.7,
+                }},
+            )
+        except Exception:
+            battle_result = None
         if battle_result is not None and battle_result.hit:
             print("检测到进入战斗，执行战斗脱离")
             context.run_task("Battle_RunEntry")
@@ -152,18 +161,21 @@ class StoneRecognition(CustomRecognition):
         argv: CustomRecognition.AnalyzeArg,
     ) -> CustomRecognition.AnalyzeResult:
 
-        reco_detail = context.run_recognition(
-            "StoneDetect_NN",
-            argv.image,
-            pipeline_override={"StoneDetect_NN": {
-                "recognition": "NeuralNetworkDetect",
-                "roi": self.ROI,
-                "model": "best-704.onnx",
-                "labels": self.LABELS,
-                "threshold": self.THRESHOLD,
-                "order_by": "Score",
-            }},
-        )
+        try:
+            reco_detail = context.run_recognition(
+                "StoneDetect_NN",
+                argv.image,
+                pipeline_override={"StoneDetect_NN": {
+                    "recognition": "NeuralNetworkDetect",
+                    "roi": self.ROI,
+                    "model": "best-704.onnx",
+                    "labels": self.LABELS,
+                    "threshold": self.THRESHOLD,
+                    "order_by": "Score",
+                }},
+            )
+        except Exception:
+            reco_detail = None
         detections = []
         if reco_detail is not None and reco_detail.hit:
             for result in (reco_detail.all_results or []):
@@ -206,16 +218,20 @@ class StoneMinePetRecognition(CustomRecognition):
         esc_roi = [920, 613, 91, 92]
         confirm_pos = (743, 594)
 
-        battle_result = context.run_recognition(
-            "BattleDetect",
-            image,
-            pipeline_override={"BattleDetect": {
-                "recognition": "TemplateMatch",
-                "template": "Battle/ESC.png",
-                "roi": esc_roi,
-                "threshold": 0.7,
-            }},
-        )
+        try:
+            battle_result = context.run_recognition(
+                "BattleDetect",
+                image,
+                pipeline_override={"BattleDetect": {
+                    "recognition": "TemplateMatch",
+                    "template": "Battle/ESC.png",
+                    "roi": esc_roi,
+                    "threshold": 0.7,
+                }},
+            )
+        except Exception:
+            return False
+
         if battle_result is None or not battle_result.hit:
             return False
 
@@ -246,18 +262,21 @@ class StoneMinePetRecognition(CustomRecognition):
         return True
 
     def _detect_stones(self, context, image):
-        reco_detail = context.run_recognition(
-            "StoneMinePet_NN",
-            image,
-            pipeline_override={"StoneMinePet_NN": {
-                "recognition": "NeuralNetworkDetect",
-                "roi": self.NN_ROI,
-                "model": "best-704.onnx",
-                "labels": self.LABELS,
-                "threshold": self.THRESHOLD,
-                "order_by": "Score",
-            }},
-        )
+        try:
+            reco_detail = context.run_recognition(
+                "StoneMinePet_NN",
+                image,
+                pipeline_override={"StoneMinePet_NN": {
+                    "recognition": "NeuralNetworkDetect",
+                    "roi": self.NN_ROI,
+                    "model": "best-704.onnx",
+                    "labels": self.LABELS,
+                    "threshold": self.THRESHOLD,
+                    "order_by": "Score",
+                }},
+            )
+        except Exception:
+            return []
         detections = []
         if reco_detail is not None and reco_detail.hit:
             for result in (reco_detail.all_results or []):
