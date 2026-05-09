@@ -160,7 +160,6 @@ class MapTeleportVerifyAct(CustomAction):
                     "expected": self.EXPECTED_MAPS,
                 }},
             )
-            print(name_result)
             if name_result is not None and name_result.hit:
                 all_results = name_result.all_results if name_result.all_results else []
                 if all_results:
@@ -190,7 +189,6 @@ class MapTeleportVerifyAct(CustomAction):
                 print(f"[MapTeleport] 地图可能未打开，等待... (第{attempt+1}次)")
                 context.run_task("MapTeleport_MainLoop",
                                 pipeline_override={"MapTeleport_MainLoop": {
-                                    "next": []
                                 }})
                 time.sleep(1.0)
 

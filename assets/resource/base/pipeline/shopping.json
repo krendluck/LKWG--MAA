@@ -123,13 +123,14 @@
         "action": "ClickKey",
         "key": 70,
         "post_delay": 500,
-        "next": ["Center_Click","MapTeleport_FindShop"]
+        "next": ["Center_Click"]
     },
     "Center_Click":{
         "recognition": "DirectHit",
         "action": "Click",
         "target": [640, 360],
-        "post_delay": 500
+        "post_delay": 500,
+        "next": ["MapTeleport_FindShop"]
     },
     "MapTeleport_FindShop": {
         "recognition": "OCR",
