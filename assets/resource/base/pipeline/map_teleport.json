@@ -1,16 +1,29 @@
 {
     "MapTeleport_OpenMap": {
         "recognition": "DirectHit",
+        "action": "DoNothing",
+        "timeout": 120000,
+        "next": ["MapTeleport_MainLoop"]
+    },
+    "MapTeleport_MainLoop": {
+        "recognition": "DirectHit",
         "action": "LongPressKey",
         "key": 9,
         "duration": 500,
         "post_delay": 3000,
+        "max_hit": 3,
         "next": ["MapTeleport_VerifyMap"]
     },
     "MapTeleport_VerifyMap": {
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "MapTeleportVerifyAct",
+        "next": ["MapTeleport_SetTeleportAnchor"]
+    },
+    "MapTeleport_SetTeleportAnchor": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "anchor": "jump_anchor",
         "next": ["MapTeleport_FindTeleportIcon"]
     },
     "MapTeleport_FindTeleportIcon": {
@@ -22,7 +35,7 @@
         "action": "Click",
         "post_delay": 500,
         "next": ["MapTeleport_FindSecondaryIcon"],
-        "on_error": ["MapTeleport_FallbackClickTeleportIcon"]
+        "on_error": ["MapTeleport_FallbackClickTeleportIcon", {"jump_back": true}]
     },
     "MapTeleport_FallbackClickTeleportIcon": {
         "recognition": "DirectHit",
@@ -40,7 +53,7 @@
         "action": "Click",
         "post_delay": 500,
         "next": ["MapTeleport_FindTransport"],
-        "on_error": ["MapTeleport_FallbackClickSecondaryIcon"]
+        "on_error": ["MapTeleport_FallbackClickSecondaryIcon", {"jump_back": true}]
     },
     "MapTeleport_FallbackClickSecondaryIcon": {
         "recognition": "DirectHit",
@@ -58,7 +71,7 @@
         "action": "Click",
         "post_delay": 500,
         "next": ["MapTeleport_WaitLanding"],
-        "on_error": ["MapTeleport_FallbackClickTransport"]
+        "on_error": ["MapTeleport_FallbackClickTransport", {"jump_back": true}]
     },
     "MapTeleport_FallbackClickTransport": {
         "recognition": "DirectHit",
@@ -79,20 +92,22 @@
         "expected": ["Enter"],
         "timeout": 20000,
         "rate_limit": 1000,
-        "next": ["MapTeleport_FindDialog"]
+        "next": ["MapTeleport_FindDialog"],
+        "on_error": [{"jump_back": true}]
     },
     "MapTeleport_FindDialog": {
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "MapTeleportFindDialogAct",
-        "next": ["MapTeleport_CheckDialogSelected"]
+        "next": ["MapTeleport_CheckDialogSelected"],
+        "on_error": [{"jump_back": true}]
     },
     "MapTeleport_CheckDialogSelected": {
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "MapTeleportCheckSelectedAct",
         "next": ["MapTeleport_PressF"],
-        "on_error": ["MapTeleport_ScrollDown"]
+        "on_error": ["MapTeleport_ScrollDown", {"jump_back": true}]
     },
     "MapTeleport_ScrollDown": {
         "recognition": "DirectHit",
@@ -116,7 +131,13 @@
         "expected": ["商店"],
         "timeout": 10000,
         "rate_limit": 1000,
-        "next": ["MapTeleport_Press1"]
+        "next": ["MapTeleport_Press1"],
+        "on_error": ["MapTeleport_SwitchToMainAnchor", {"jump_back": true}]
+    },
+    "MapTeleport_SwitchToMainAnchor": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "anchor": {"jump_anchor": "MapTeleport_MainLoop"}
     },
     "MapTeleport_Press1": {
         "recognition": "DirectHit",

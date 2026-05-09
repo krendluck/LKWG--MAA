@@ -8,6 +8,7 @@
     },
     "TemplateMatch": {
         "recognition": "TemplateMatch",
+        "template": [],
         "threshold": 0.7
     }
 }
