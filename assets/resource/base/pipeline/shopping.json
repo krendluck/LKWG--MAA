@@ -10,7 +10,7 @@
         "action": "LongPressKey",
         "key": 9,
         "duration": 500,
-        "post_delay": 3000,
+        "post_delay": 500,
         "max_hit": 3,
         "next": ["MapTeleport_VerifyMap"]
     },
@@ -122,8 +122,14 @@
         "recognition": "DirectHit",
         "action": "ClickKey",
         "key": 70,
-        "post_delay": 1000,
-        "next": ["MapTeleport_FindShop"]
+        "post_delay": 500,
+        "next": ["Center_Click","MapTeleport_FindShop"]
+    },
+    "Center_Click":{
+        "recognition": "DirectHit",
+        "action": "Click",
+        "target": [640, 360],
+        "post_delay": 500
     },
     "MapTeleport_FindShop": {
         "recognition": "OCR",

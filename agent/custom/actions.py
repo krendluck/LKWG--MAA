@@ -135,6 +135,7 @@ class MapTeleportVerifyAct(CustomAction):
     MAP_NAME_ROI = [98, 659, 100, 27]
     MAP_SWITCH_CLICK = (102 + 54, 476 + 15)
     EXPECTED_MAPS = ["卡洛西亚大陆", "魔法学院"]
+    VALID_MAP_NAMES = ["家园室内", "家园种植园"]
     MAP_OPEN_RETRIES = 3
 
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
@@ -173,16 +174,18 @@ class MapTeleportVerifyAct(CustomAction):
                 pipeline_override={"MapTeleport_AnyText": {
                     "recognition": "OCR",
                     "roi": self.MAP_NAME_ROI,
+                    "expected": self.VALID_MAP_NAMES,
                 }},
             )
 
             if any_text_result is not None and any_text_result.hit:
+                print(any_text_result)
                 print(f"[MapTeleport] 地图已打开但不是目标地图，尝试切换 (第{attempt+1}次)")
                 roi = self.MAP_NAME_ROI
                 ctrl.post_click(roi[0] + roi[2] // 2, roi[1] + roi[3] // 2).wait()
                 time.sleep(0.5)
                 ctrl.post_click(*self.MAP_SWITCH_CLICK).wait()
-                time.sleep(1.0)
+                time.sleep(0.5)
             else:
                 print(f"[MapTeleport] 地图可能未打开，等待... (第{attempt+1}次)")
                 context.run_task("MapTeleport_OpenMap",
@@ -233,7 +236,7 @@ class MapTeleportFindDialogAct(CustomAction):
         context.run_task("MapTeleport_WalkForward_KeyDown")
 
         for retry in range(3):
-            time.sleep(1.0)
+            time.sleep(0.5)
             ctrl.post_screencap().wait()
             image = ctrl.cached_image
             if image is None:
@@ -256,6 +259,7 @@ class MapTeleportFindDialogAct(CustomAction):
                 return True
 
             print(f"[MapTeleport] 走动后仍未找到对话选项 (重试{retry+1}/3)")
+            time.sleep(0.5)
 
         print("[MapTeleport] 走动后仍未找到对话选项")
         return False
