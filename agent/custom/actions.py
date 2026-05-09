@@ -160,12 +160,12 @@ class MapTeleportVerifyAct(CustomAction):
                     "expected": self.EXPECTED_MAPS,
                 }},
             )
-
+            print(name_result)
             if name_result is not None and name_result.hit:
                 all_results = name_result.all_results if name_result.all_results else []
                 if all_results:
-                    detail = all_results[0].detail if hasattr(all_results[0], 'detail') else ""
-                    print(f"[MapTeleport] 当前地图匹配: {detail}")
+                    map_name = all_results[0].text if hasattr(all_results[0], 'text') else ""
+                    print(f"[MapTeleport] 当前地图匹配: {map_name}")
                 return True
 
             any_text_result = context.run_recognition(
@@ -188,8 +188,8 @@ class MapTeleportVerifyAct(CustomAction):
                 time.sleep(0.5)
             else:
                 print(f"[MapTeleport] 地图可能未打开，等待... (第{attempt+1}次)")
-                context.run_task("MapTeleport_OpenMap",
-                                pipeline_override={"MapTeleport_OpenMap": {
+                context.run_task("MapTeleport_MainLoop",
+                                pipeline_override={"MapTeleport_MainLoop": {
                                     "next": []
                                 }})
                 time.sleep(1.0)
