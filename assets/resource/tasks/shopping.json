@@ -82,6 +82,17 @@
                             }
                         }
                     }
+                },
+                {
+                    "name": "蛋",
+                    "label": "蛋",
+                    "pipeline_override": {
+                        "MapTeleport_BuyLoop": {
+                            "attach": {
+                                "_buy_蛋": true
+                            }
+                        }
+                    }
                 }
             ]
         }
