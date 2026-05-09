@@ -1,0 +1,38 @@
+{
+    "task": [
+        {
+            "name": "地图传送",
+            "entry": "MapTeleport_OpenMap",
+            "option": [
+                "地图快捷键"
+            ],
+            "group": ["daily"]
+        }
+    ],
+    "option": {
+        "地图快捷键": {
+            "type": "select",
+            "default_case": "Tab",
+            "cases": [
+                {
+                    "name": "Tab",
+                    "label": "Tab键",
+                    "pipeline_override": {
+                        "MapTeleport_OpenMap": {
+                            "key": 9
+                        }
+                    }
+                },
+                {
+                    "name": "M",
+                    "label": "M键",
+                    "pipeline_override": {
+                        "MapTeleport_OpenMap": {
+                            "key": 77
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

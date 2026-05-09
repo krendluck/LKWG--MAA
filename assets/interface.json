@@ -16,7 +16,9 @@
                 "screencap": "FramePool",
                 "mouse": "Seize",
                 "keyboard": "Seize"
-            }
+            },
+            "permission_required": true
+            
         }
     ],
     "resource": [
@@ -55,6 +57,8 @@
         "resource/tasks/battle_run.json",
         "resource/tasks/auto_release_pet.json",
         "resource/tasks/stone_detect.json",
-        "resource/tasks/stone_mine_pet.json"
+        "resource/tasks/stone_mine_pet.json",
+        "resource/tasks/screenshot.json",
+        "resource/tasks/map_teleport.json"
     ]
 }

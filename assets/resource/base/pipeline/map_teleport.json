@@ -1,0 +1,59 @@
+{
+    "MapTeleport_OpenMap": {
+        "recognition": "DirectHit",
+        "action": "LongPressKey",
+        "key": 9,
+        "duration": 500,
+        "post_delay": 3000,
+        "next": ["MapTeleport_Entry"]
+    },
+    "MapTeleport_Entry": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "MapTeleportAct",
+        "post_delay": 1000
+    },
+    "MapTeleport_ScrollDown": {
+        "recognition": "DirectHit",
+        "action": "Scroll",
+        "target": [766, 357, 184, 121],
+        "dy": -120,
+        "post_delay": 500
+    },
+    "MapTeleport_PressF": {
+        "recognition": "DirectHit",
+        "action": "ClickKey",
+        "key": 70,
+        "post_delay": 1000
+    },
+    "MapTeleport_Press1": {
+        "recognition": "DirectHit",
+        "action": "ClickKey",
+        "key": 49,
+        "post_delay": 1000
+    },
+    "MapTeleport_PressEsc": {
+        "recognition": "DirectHit",
+        "action": "ClickKey",
+        "key": 27,
+        "post_delay": 1000
+    },
+    "MapTeleport_WalkForward_KeyDown": {
+        "recognition": "DirectHit",
+        "action": "KeyDown",
+        "key": 87,
+        "next": ["MapTeleport_WalkForward_Wait"]
+    },
+    "MapTeleport_WalkForward_Wait": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "post_delay": 1000,
+        "next": ["MapTeleport_WalkForward_KeyUp"]
+    },
+    "MapTeleport_WalkForward_KeyUp": {
+        "recognition": "DirectHit",
+        "action": "KeyUp",
+        "key": 87,
+        "post_delay": 1000
+    }
+}

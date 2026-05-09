@@ -168,7 +168,7 @@ class StoneRecognition(CustomRecognition):
                 pipeline_override={"StoneDetect_NN": {
                     "recognition": "NeuralNetworkDetect",
                     "roi": self.ROI,
-                    "model": "best-704.onnx",
+                    "model": "best-test.onnx",
                     "labels": self.LABELS,
                     "threshold": self.THRESHOLD,
                     "order_by": "Score",
