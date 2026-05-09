@@ -35,7 +35,7 @@
         "action": "Click",
         "post_delay": 500,
         "next": ["MapTeleport_FindSecondaryIcon"],
-        "on_error": ["MapTeleport_FallbackClickTeleportIcon", {"jump_back": true}]
+        "on_error": ["MapTeleport_FallbackClickTeleportIcon", "[JumpBack]"]
     },
     "MapTeleport_FallbackClickTeleportIcon": {
         "recognition": "DirectHit",
@@ -53,7 +53,7 @@
         "action": "Click",
         "post_delay": 500,
         "next": ["MapTeleport_FindTransport"],
-        "on_error": ["MapTeleport_FallbackClickSecondaryIcon", {"jump_back": true}]
+        "on_error": ["MapTeleport_FallbackClickSecondaryIcon", "[JumpBack]"]
     },
     "MapTeleport_FallbackClickSecondaryIcon": {
         "recognition": "DirectHit",
@@ -71,7 +71,7 @@
         "action": "Click",
         "post_delay": 500,
         "next": ["MapTeleport_WaitLanding"],
-        "on_error": ["MapTeleport_FallbackClickTransport", {"jump_back": true}]
+        "on_error": ["MapTeleport_FallbackClickTransport", "[JumpBack]"]
     },
     "MapTeleport_FallbackClickTransport": {
         "recognition": "DirectHit",
@@ -93,21 +93,21 @@
         "timeout": 20000,
         "rate_limit": 1000,
         "next": ["MapTeleport_FindDialog"],
-        "on_error": [{"jump_back": true}]
+        "on_error": ["[JumpBack]"]
     },
     "MapTeleport_FindDialog": {
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "MapTeleportFindDialogAct",
         "next": ["MapTeleport_CheckDialogSelected"],
-        "on_error": [{"jump_back": true}]
+        "on_error": ["[JumpBack]"]
     },
     "MapTeleport_CheckDialogSelected": {
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "MapTeleportCheckSelectedAct",
         "next": ["MapTeleport_PressF"],
-        "on_error": ["MapTeleport_ScrollDown", {"jump_back": true}]
+        "on_error": ["MapTeleport_ScrollDown", "[JumpBack]"]
     },
     "MapTeleport_ScrollDown": {
         "recognition": "DirectHit",
@@ -132,7 +132,7 @@
         "timeout": 10000,
         "rate_limit": 1000,
         "next": ["MapTeleport_Press1"],
-        "on_error": ["MapTeleport_SwitchToMainAnchor", {"jump_back": true}]
+        "on_error": ["MapTeleport_SwitchToMainAnchor", "[JumpBack]"]
     },
     "MapTeleport_SwitchToMainAnchor": {
         "recognition": "DirectHit",
