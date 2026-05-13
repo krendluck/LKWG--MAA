@@ -4,7 +4,8 @@
             "name": "自动战斗",
             "entry": "AutoBattle_Entry",
             "option": [
-                "技能顺序"
+                "技能顺序",
+                "使用印记"
             ],
             "group": ["battle"]
         }
@@ -15,11 +16,11 @@
             "inputs": [
                 {
                     "name": "skill_order",
-                    "label": "技能顺序 (1-4=技能, x=聚能, q=背包, r=关闭背包, |操作|次数 重复)",
-                    "default": "|1x|4",
-                    "pipeline_type": "str",
-                    "verify": "^[1-4xXqQrR|0-9]+$",
-                    "pattern_msg": "只能包含 1-4, x(聚能), q(背包), r(关闭背包), |操作|次数(重复)"
+                    "label": "技能顺序 (1-4=技能, x=聚能, q=背包, r=关闭背包, |操作|次数 重复, |操作|a 无限循环)",
+                    "default": "|1x|a",
+                    "pipeline_type": "string",
+                    "verify": "^[1-4xXqQrR|aA0-9]+$",
+                    "pattern_msg": "只能包含 1-4, x(聚能), q(背包), r(关闭背包), |操作|次数(重复), |操作|a(无限循环)"
                 }
             ],
             "pipeline_override": {
@@ -29,6 +30,34 @@
                     }
                 }
             }
+        },
+        "使用印记": {
+            "type": "select",
+            "default_case": "不使用",
+            "cases": [
+                {
+                    "name": "不使用",
+                    "label": "不使用",
+                    "pipeline_override": {
+                        "AutoBattle_UseMark": {
+                            "attach": {
+                                "use_mark": "false"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "使用",
+                    "label": "使用",
+                    "pipeline_override": {
+                        "AutoBattle_UseMark": {
+                            "attach": {
+                                "use_mark": "true"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     }
 }

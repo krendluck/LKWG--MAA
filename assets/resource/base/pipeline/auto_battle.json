@@ -1,34 +1,80 @@
 {
     "AutoBattle_Entry": {
-        "recognition": "TemplateMatch",
-        "template": "Battle/ESC.png",
-        "roi": [920, 613, 91, 92],
-        "threshold": 0.7,
+        "recognition": "OCR",
+        "roi": [1234, 673, 9, 11],
+        "expected": ["R"],
         "action": "DoNothing",
         "post_delay": 500,
         "timeout": -1,
-        "next": "AutoBattle_WaitSkill1"
+        "next": "AutoBattle_Reset"
+    },
+    "AutoBattle_Reset": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "AutoBattleReset",
+        "next": "AutoBattle_CheckBattle"
+    },
+    "AutoBattle_CheckBattle": {
+        "recognition": "OCR",
+        "roi": [1234, 673, 9, 11],
+        "expected": ["R"],
+        "action": "DoNothing",
+        "post_delay": 200,
+        "timeout": 3000,
+        "rate_limit": 500,
+        "next": "AutoBattle_WaitSkill1",
+        "on_error": "AutoBattle_BattleEndCheck"
     },
     "AutoBattle_WaitSkill1": {
         "recognition": "OCR",
-        "roi": [147, 257, 21, 17],
+        "roi": [152, 259, 10, 13],
         "expected": ["1"],
         "action": "DoNothing",
         "post_delay": 300,
-        "timeout": 30000,
+        "timeout": 5000,
+        "rate_limit": 500,
         "next": "AutoBattle_ExecuteRound",
-        "on_error": "AutoBattle_Done"
+        "on_error": "AutoBattle_BattleEndCheck"
     },
     "AutoBattle_ExecuteRound": {
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "AutoBattleAct",
-        "post_delay": 2000,
-        "next": "AutoBattle_WaitSkill1"
+        "post_delay": 1500,
+        "next": "AutoBattle_CheckBattle"
+    },
+    "AutoBattle_BattleEndCheck": {
+        "recognition": "OCR",
+        "roi": [719, 582, 44, 21],
+        "expected": ["确认"],
+        "action": "DoNothing",
+        "timeout": 15000,
+        "next": "AutoBattle_Done",
+        "on_error": "AutoBattle_Done"
+    },
+    "AutoBattle_WaitBackpackR": {
+        "recognition": "OCR",
+        "roi": [1234, 673, 9, 11],
+        "expected": ["R"],
+        "timeout": 5000,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_key",
+            "key": 82
+        },
+        "post_delay": 300
     },
     "AutoBattle_Done": {
         "recognition": "DirectHit",
         "action": "DoNothing",
-        "timeout": -1
+        "next": ["AutoBattle_UseMark"]
+    },
+    "AutoBattle_UseMark": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "AutoBattleUseMarkAct",
+        "post_delay": 1000,
+        "attach": {"use_mark" : true}
     }
 }
