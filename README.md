@@ -89,4 +89,6 @@ YOLO 神经网络模型检测矿石，识别后自动按住鼠标挖矿，挖矿
 
 ## 鸣谢
 
-本项目由 **[MaaFramework](https://github.com/MaaXYZ/MaaFramework)** 强力驱动！
+- **[MaaFramework](https://github.com/MaaXYZ/MaaFramework)** — 基于图像识别的自动化黑盒测试框架，本项目的核心驱动
+- **[M9A](https://github.com/MAA1999/M9A)** — 重返未来：1999 小助手，本项目的模块化架构参考
+- **[Interception](https://github.com/oblitum/Interception)** — 输入设备拦截与控制 API，本项目用于绕过游戏输入保护
