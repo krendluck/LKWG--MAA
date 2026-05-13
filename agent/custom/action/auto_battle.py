@@ -1,4 +1,4 @@
-import json
+import re
 import time
 
 from maa.agent.agent_server import AgentServer
@@ -7,6 +7,10 @@ from maa.context import Context
 
 from ..interception_controller import get_controller
 from .general import _update_image_size
+
+
+def _expand_skill_order(s):
+    return re.sub(r'\|([^|]+)\|(\d+)', lambda m: m.group(1) * int(m.group(2)), s)
 
 CHAR_TO_VK = {
     "1": 0x31, "2": 0x32, "3": 0x33, "4": 0x34,
@@ -32,7 +36,7 @@ class AutoBattleAct(CustomAction):
         node_obj = context.get_node_object("AutoBattle_WaitSkill1")
         attach = getattr(node_obj, "attach", {}) if node_obj else {}
         skill_order = attach.get("skill_order", "1x2x3x4x")
-        skill_order = skill_order.strip()
+        skill_order = _expand_skill_order(skill_order.strip())
         if not skill_order:
             return False
 

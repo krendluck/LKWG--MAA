@@ -15,11 +15,11 @@
             "inputs": [
                 {
                     "name": "skill_order",
-                    "label": "技能顺序 (1-4=技能, x=聚能, q=背包, r=关闭背包)",
-                    "default": "1x2x3x4x",
+                    "label": "技能顺序 (1-4=技能, x=聚能, q=背包, r=关闭背包, |操作|次数 重复)",
+                    "default": "|1x|4",
                     "pipeline_type": "str",
-                    "verify": "^[1-4xXqQrR]+$",
-                    "pattern_msg": "只能包含 1-4, x(聚能), q(背包), r(关闭背包)"
+                    "verify": "^[1-4xXqQrR|0-9]+$",
+                    "pattern_msg": "只能包含 1-4, x(聚能), q(背包), r(关闭背包), |操作|次数(重复)"
                 }
             ],
             "pipeline_override": {
