@@ -12,9 +12,27 @@
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "AutoBattleReset",
-        "next": "AutoBattle_CheckBattle"
+        "next": "AutoBattle_WaitSkill1"
     },
-    "AutoBattle_CheckBattle": {
+    "AutoBattle_WaitSkill1": {
+        "recognition": "OCR",
+        "roi": [152, 259, 10, 13],
+        "expected": ["1"],
+        "action": "DoNothing",
+        "post_delay": 300,
+        "timeout": 8000,
+        "rate_limit": 500,
+        "next": "AutoBattle_ExecuteRound",
+        "on_error": "AutoBattle_CheckBattleEnd"
+    },
+    "AutoBattle_ExecuteRound": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "AutoBattleAct",
+        "post_delay": 1500,
+        "next": "AutoBattle_WaitSkill1"
+    },
+    "AutoBattle_CheckBattleEnd": {
         "recognition": "OCR",
         "roi": [1234, 673, 9, 11],
         "expected": ["R"],
@@ -25,31 +43,14 @@
         "next": "AutoBattle_WaitSkill1",
         "on_error": "AutoBattle_BattleEndCheck"
     },
-    "AutoBattle_WaitSkill1": {
-        "recognition": "OCR",
-        "roi": [152, 259, 10, 13],
-        "expected": ["1"],
-        "action": "DoNothing",
-        "post_delay": 300,
-        "timeout": 5000,
-        "rate_limit": 500,
-        "next": "AutoBattle_ExecuteRound",
-        "on_error": "AutoBattle_BattleEndCheck"
-    },
-    "AutoBattle_ExecuteRound": {
-        "recognition": "DirectHit",
-        "action": "Custom",
-        "custom_action": "AutoBattleAct",
-        "post_delay": 1500,
-        "next": "AutoBattle_CheckBattle"
-    },
     "AutoBattle_BattleEndCheck": {
         "recognition": "OCR",
         "roi": [719, 582, 44, 21],
         "expected": ["确认"],
         "action": "DoNothing",
         "timeout": 15000,
-        "next": "AutoBattle_Done"
+        "next": "AutoBattle_Done",
+        "on_error": "AutoBattle_Done"
     },
     "AutoBattle_WaitBackpackR": {
         "recognition": "OCR",
@@ -74,6 +75,6 @@
         "action": "Custom",
         "custom_action": "AutoBattleUseMarkAct",
         "post_delay": 1000,
-        "attach": {"use_mark" : true}
+        "attach": {"use_mark": true}
     }
 }

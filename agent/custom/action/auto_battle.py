@@ -153,22 +153,6 @@ class AutoBattleAct(CustomAction):
         if not skill_order:
             return False
 
-        ctrl.post_screencap().wait()
-        image = ctrl.cached_image
-        if image is not None:
-            r_result = context.run_recognition(
-                "BattleRCheck", image,
-                pipeline_override={"BattleRCheck": {
-                    "recognition": "OCR",
-                    "roi": [1234, 673, 9, 11],
-                    "expected": ["R"],
-                }},
-            )
-            if r_result is None or not r_result.hit:
-                print("[AutoBattle] R 不在屏幕上，战斗可能已结束")
-                AutoBattleAct._skill_index = 0
-                return False
-
         idx = AutoBattleAct._skill_index
         if idx >= len(skill_order):
             AutoBattleAct._skill_index = 0
