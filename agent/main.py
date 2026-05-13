@@ -140,8 +140,7 @@ def main():
             logger.write("Continuing without init_option - this is expected in v5.10.4+.\n")
 
         import custom
-        import custom.actions
-        import custom.recognition
+        custom.register_all()
 
         logger.write("Custom modules imported successfully.\n")
 
