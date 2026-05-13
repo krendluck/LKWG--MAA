@@ -9,8 +9,11 @@
             101
         ],
         "threshold": 0.7,
-        "action": "Click",
-        "target": true,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_target"
+        },
         "post_delay": 300,
         "timeout": -1,
         "next": "FocusEnergy_Click"

@@ -4,6 +4,9 @@ from maa.context import Context
 
 import json
 import time
+import numpy as np
+
+from .interception_controller import get_controller
 
 _switch_keys = [2, 3, 4, 5, 6]
 _switch_key_index = 2
@@ -237,9 +240,13 @@ class StoneMinePetRecognition(CustomRecognition):
 
         print("[StoneMinePet] 检测到进入战斗，执行战斗脱离")
         for _ in range(5):
-            ctrl.post_click(920 + 91 // 2, 613 + 92 // 2).wait()
+            if ctrl.cached_image is not None:
+                bgr = np.asarray(ctrl.cached_image, dtype=np.uint8)
+                h, w = bgr.shape[:2]
+                get_controller().update_image_size(w, h)
+            get_controller().click(920 + 91 // 2, 613 + 92 // 2)
             time.sleep(0.5)
-            ctrl.post_click(*confirm_pos).wait()
+            get_controller().click(*confirm_pos)
             time.sleep(1)
 
             ctrl.post_screencap().wait()

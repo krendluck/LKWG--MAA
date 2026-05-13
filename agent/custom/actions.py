@@ -9,8 +9,17 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 
+from .interception_controller import get_controller
+
 _debug_counter = 0
 _DEBUG_SAVE_ENABLED = False
+
+
+def _update_image_size(ctrl):
+    if ctrl.cached_image is not None:
+        bgr = np.asarray(ctrl.cached_image, dtype=np.uint8)
+        h, w = bgr.shape[:2]
+        get_controller().update_image_size(w, h)
 
 
 def save_debug(ctrl, name, prefix="debug"):
@@ -35,9 +44,7 @@ def save_debug(ctrl, name, prefix="debug"):
 @AgentServer.custom_action("TestAct")
 class TestAct(CustomAction):
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
-        x, y = 640, 360
-        ctrl = context.tasker.controller
-        ctrl.post_click_key(78).wait()
+        get_controller().click_key(78)
         return True
     
 @AgentServer.custom_action("AutoLaunchAct")
@@ -50,7 +57,9 @@ class AutoLaunchAct(CustomAction):
             if box:
                 x = box[0] + box[2] // 2
                 y = box[1] + box[3] // 2
-                context.tasker.controller.post_click(x, y).wait()
+                ctrl = context.tasker.controller
+                _update_image_size(ctrl)
+                get_controller().click(x, y)
                 return True
         return False
 
@@ -61,7 +70,8 @@ class FocusEnergyAct(CustomAction):
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
         x, y = 62, 633
         ctrl = context.tasker.controller
-        ctrl.post_click(x, y, contact=0).wait()
+        _update_image_size(ctrl)
+        get_controller().click(x, y)
         return True
 
 
@@ -77,7 +87,7 @@ class AutoReleasePetAct(CustomAction):
         key_code = detail.get("key_code")
         if next_num is None:
             return False
-        context.tasker.controller.post_click_key(key_code).wait()
+        get_controller().click_key(key_code)
         return True
 
 
@@ -127,15 +137,16 @@ class StoneMinePetAct(CustomAction):
             switch_key_code = detail.get("switch_key_code")
             if click_x is not None and click_y is not None:
                 ctrl = context.tasker.controller
+                _update_image_size(ctrl)
                 if mine_key_code is not None:
-                    ctrl.post_click_key(mine_key_code).wait()
+                    get_controller().click_key(mine_key_code)
                     time.sleep(0.2)
-                ctrl.post_touch_down(click_x, click_y, contact=0).wait()
+                get_controller().touch_down(click_x, click_y)
                 time.sleep(hold_duration)
-                ctrl.post_touch_up(contact=0).wait()
+                get_controller().touch_up()
                 time.sleep(0.2)
                 if switch_key_code is not None:
-                    ctrl.post_click_key(switch_key_code).wait()
+                    get_controller().click_key(switch_key_code)
 
         return True
 
@@ -192,9 +203,10 @@ class MapTeleportVerifyAct(CustomAction):
                 print(any_text_result)
                 print(f"[MapTeleport] 地图已打开但不是目标地图，尝试切换 (第{attempt+1}次)")
                 roi = self.MAP_NAME_ROI
-                ctrl.post_click(roi[0] + roi[2] // 2, roi[1] + roi[3] // 2).wait()
+                _update_image_size(ctrl)
+                get_controller().click(roi[0] + roi[2] // 2, roi[1] + roi[3] // 2)
                 time.sleep(0.5)
-                ctrl.post_click(*self.MAP_SWITCH_CLICK).wait()
+                get_controller().click(*self.MAP_SWITCH_CLICK)
                 time.sleep(0.5)
             else:
                 print(f"[MapTeleport] 地图可能未打开，等待... (第{attempt+1}次)")
@@ -357,23 +369,24 @@ class MapTeleportBuyLoopAct(CustomAction):
         start_y = swipe_roi[1] + swipe_roi[3] // 2
         end_x = start_x + self.SWIPE_DIST_X
 
+        _update_image_size(ctrl)
         print(f"[MapTeleport] 滑块拖动 ({start_x},{start_y}) -> ({end_x},{start_y})")
-        ctrl.post_touch_down(start_x, start_y, contact=0).wait()
+        get_controller().touch_down(start_x, start_y)
         time.sleep(0.3)
         for i in range(1, self.SWIPE_STEPS + 1):
             move_x = start_x + (self.SWIPE_DIST_X * i // self.SWIPE_STEPS)
-            ctrl.post_touch_move(move_x, start_y, contact=0).wait()
+            get_controller().touch_move(move_x, start_y)
             time.sleep(0.02)
-        ctrl.post_touch_up(contact=0).wait()
+        get_controller().touch_up()
         time.sleep(0.5)
 
         confirm_roi = self.CONFIRM_CLICK_ROI
         confirm_x = confirm_roi[0] + confirm_roi[2] // 2
         confirm_y = confirm_roi[1] + confirm_roi[3] // 2
         print(f"[MapTeleport] 确认购买点击({confirm_x},{confirm_y})")
-        ctrl.post_click(confirm_x, confirm_y).wait()
+        get_controller().click(confirm_x, confirm_y)
         time.sleep(1.0)
-        ctrl.post_click(confirm_x, confirm_y).wait()
+        get_controller().click(confirm_x, confirm_y)
         time.sleep(1.0)
 
     def _buy_all(self, ctrl, context):
@@ -404,7 +417,8 @@ class MapTeleportBuyLoopAct(CustomAction):
                 print("[MapTeleport] 多次未检测到购买区域文字")
                 context.run_task("MapTeleport_PressEsc")
                 time.sleep(0.5)
-                ctrl.post_click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1]).wait()
+                _update_image_size(ctrl)
+                get_controller().click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1])
                 return True
 
             result = buy_result.all_results[0] if buy_result.all_results else []
@@ -412,21 +426,24 @@ class MapTeleportBuyLoopAct(CustomAction):
                 print("[MapTeleport] 检测到已售罄，按ESC退出")
                 context.run_task("MapTeleport_PressEsc")
                 time.sleep(0.5)
-                ctrl.post_click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1]).wait()
+                _update_image_size(ctrl)
+                get_controller().click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1])
                 return True
 
             box = buy_result.box
             x = box[0] + box[2] // 2
             y = box[1] + box[3] // 2
             print(f"[MapTeleport] 找到购买按钮，点击({x},{y})")
-            ctrl.post_click(x, y).wait()
+            _update_image_size(ctrl)
+            get_controller().click(x, y)
             time.sleep(0.5)
             self._swipe_and_confirm(ctrl)
 
         print("[MapTeleport] 购买循环达到上限，退出")
         context.run_task("MapTeleport_PressEsc")
         time.sleep(0.5)
-        ctrl.post_click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1]).wait()
+        _update_image_size(ctrl)
+        get_controller().click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1])
         return True
 
     def _match_item(self, item, text):
@@ -467,7 +484,8 @@ class MapTeleportBuyLoopAct(CustomAction):
                     x = box[0] + box[2] // 2
                     y = box[1] + box[3] // 2
                     print(f"[MapTeleport] 找到 {item}(\"{text}\") @({x},{y})，点击")
-                    ctrl.post_click(x, y).wait()
+                    _update_image_size(ctrl)
+                    get_controller().click(x, y)
                     time.sleep(0.5)
                     found = True
                     break
@@ -505,7 +523,8 @@ class MapTeleportBuyLoopAct(CustomAction):
             x = box[0] + box[2] // 2
             y = box[1] + box[3] // 2
             print(f"[MapTeleport] 购买 {item}，点击({x},{y})")
-            ctrl.post_click(x, y).wait()
+            _update_image_size(ctrl)
+            get_controller().click(x, y)
             time.sleep(0.5)
 
             self._swipe_and_confirm(ctrl)
@@ -515,7 +534,8 @@ class MapTeleportBuyLoopAct(CustomAction):
         print(f"[MapTeleport] 愿望清单处理完毕，已购买: {bought}")
         context.run_task("MapTeleport_PressEsc")
         time.sleep(0.5)
-        ctrl.post_click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1]).wait()
+        _update_image_size(ctrl)
+        get_controller().click(self.SCREEN_CENTER[0], self.SCREEN_CENTER[1])
         return True
 
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
@@ -573,6 +593,69 @@ class ScreenshotSave(CustomAction):
         return True
 
 
+@AgentServer.custom_action("InterceptionInput")
+class InterceptionInputAct(CustomAction):
+
+    def run(self, context: Context, argv: CustomAction.RunArg) -> bool:
+        try:
+            param = json.loads(argv.custom_action_param or "{}")
+        except Exception:
+            param = {}
+
+        if isinstance(argv.custom_action_param, dict):
+            param = argv.custom_action_param
+        elif isinstance(argv.custom_action_param, str):
+            try:
+                param = json.loads(argv.custom_action_param)
+            except Exception:
+                param = {}
+
+        action_type = param.get("type", "")
+        key = param.get("key")
+        target = param.get("target")
+        duration = param.get("duration", 500)
+        ctrl = get_controller()
+
+        if action_type == "click_key":
+            if key is not None:
+                ctrl.click_key(key)
+                return True
+
+        elif action_type == "long_press_key":
+            if key is not None:
+                ctrl.long_press_key(key, duration_ms=duration)
+                return True
+
+        elif action_type == "key_down":
+            if key is not None:
+                ctrl.key_down(key)
+                return True
+
+        elif action_type == "key_up":
+            if key is not None:
+                ctrl.key_up(key)
+                return True
+
+        elif action_type == "click":
+            if target is not None and isinstance(target, list) and len(target) >= 2:
+                _update_image_size(context.tasker.controller)
+                ctrl.click(target[0], target[1])
+                return True
+
+        elif action_type == "click_target":
+            reco_detail = argv.reco_detail
+            if reco_detail is not None and reco_detail.hit:
+                box = reco_detail.box
+                if box:
+                    x = box[0] + box[2] // 2
+                    y = box[1] + box[3] // 2
+                    _update_image_size(context.tasker.controller)
+                    ctrl.click(x, y)
+                    return True
+
+        return False
+
+
 __all__ = [
     "AutoLaunchAct",
     "FocusEnergyAct",
@@ -584,4 +667,5 @@ __all__ = [
     "MapTeleportCheckSelectedAct",
     "MapTeleportBuyLoopAct",
     "ScreenshotSave",
+    "InterceptionInputAct",
 ]

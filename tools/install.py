@@ -91,12 +91,24 @@ def install_deps():
             install_path / "libs" / "MaaAgentBinary",
             dirs_exist_ok=True,
         )
-        shutil.copytree(
+shutil.copytree(
             working_dir / "deps" / "bin" / "plugins",
             install_path / "plugins" / get_dotnet_platform_tag(),
             dirs_exist_ok=True,
         )
 
+        # Override with Interception-enabled DLL (Windows x64 only)
+        if os_name == "win" and arch == "x86_64":
+            custom_dir = working_dir / "deps" / "custom"
+            native_dir = install_path / "runtimes" / get_dotnet_platform_tag() / "native"
+            custom_dll = custom_dir / "MaaWin32ControlUnit.dll"
+            interp_dll = custom_dir / "interception.dll"
+            if custom_dll.exists():
+                shutil.copy2(custom_dll, native_dir)
+                print(f"[Interception] Override MaaWin32ControlUnit.dll ({custom_dll.stat().st_size} bytes)")
+            if interp_dll.exists():
+                shutil.copy2(interp_dll, native_dir)
+                print(f"[Interception] Copied interception.dll ({interp_dll.stat().st_size} bytes)")
 
 
 def install_resource():

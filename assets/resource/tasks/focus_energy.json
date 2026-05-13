@@ -19,8 +19,12 @@
                     "label": "按键 x",
                     "pipeline_override": {
                         "Focus_EnergyEntry": {
-                            "action": "ClickKey",
-                            "key": 88
+                            "action": "Custom",
+                            "custom_action": "InterceptionInput",
+                            "custom_action_param": {
+                                "type": "click_key",
+                                "key": 88
+                            }
                         }
                     }
                 },
@@ -29,8 +33,11 @@
                     "label": "点击方式",
                     "pipeline_override": {
                         "Focus_EnergyEntry": {
-                            "action": "Click",
-                            "target": true
+                            "action": "Custom",
+                            "custom_action": "InterceptionInput",
+                            "custom_action_param": {
+                                "type": "click_target"
+                            }
                         }
                     }
                 }

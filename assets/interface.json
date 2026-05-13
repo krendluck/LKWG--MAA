@@ -10,12 +10,13 @@
         {
             "name": "桌面端",
             "type": "Win32",
+            "permission_required": true,
             "win32": {
                 "class_regex": ".*",
                 "window_regex": "洛克王国：世界",
                 "screencap": "FramePool",
-                "mouse": "LegacyEvent",
-                "keyboard": "LegacyEvent"
+                "mouse": "Seize",
+                "keyboard": "Seize"
             }
         }
     ],

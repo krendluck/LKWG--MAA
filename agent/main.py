@@ -11,6 +11,8 @@ PI v2.5.0: Client 启动子进程时会注入 PI_* 环境变量，
 包括 PI_INTERFACE_VERSION、PI_CLIENT_*、PI_VERSION、PI_CONTROLLER、PI_RESOURCE 等。
 """
 
+import ctypes
+import ctypes.wintypes
 import os
 import sys
 import traceback
@@ -86,12 +88,34 @@ def log_env_info(logger):
     logger.write(f"Script exists: {Path(__file__).exists()}\n")
 
 
+def find_window_by_title(title_substring):
+    user32 = ctypes.windll.user32
+    results = []
+
+    def enum_callback(hwnd, _):
+        if user32.IsWindowVisible(hwnd):
+            length = user32.GetWindowTextLengthW(hwnd)
+            if length > 0:
+                buf = ctypes.create_unicode_buffer(length + 1)
+                user32.GetWindowTextW(hwnd, buf, length + 1)
+                if title_substring in buf.value:
+                    results.append((hwnd, buf.value))
+
+    WNDENUMPROC = ctypes.WINFUNCTYPE(
+        ctypes.c_bool, ctypes.wintypes.HWND, ctypes.wintypes.LPARAM
+    )
+    user32.EnumWindows(WNDENUMPROC(enum_callback), 0)
+    return results
+
+
 def main():
     _original_stdout = sys.stdout
     _original_stderr = sys.stderr
     logger, log_file = setup_logging()
     sys.stdout = _TeeStream(logger, _original_stdout)
     sys.stderr = _TeeStream(logger, _original_stderr)
+
+    interception_ctrl = None
 
     try:
         log_env_info(logger)
@@ -120,6 +144,38 @@ def main():
         import custom.recognition
 
         logger.write("Custom modules imported successfully.\n")
+
+        from custom.interception_controller import get_controller
+        interception_ctrl = get_controller()
+
+        try:
+            interception_ctrl.initialize()
+            logger.write("[Interception] Context initialized.\n")
+
+            windows = find_window_by_title("洛克王国：世界")
+            if windows:
+                hwnd, title = windows[0]
+                interception_ctrl.set_window_hwnd(hwnd)
+                logger.write(f"[Interception] Found window: {title} (hwnd={hwnd})\n")
+            else:
+                logger.write("[Interception] Game window not found, using screen coordinates.\n")
+
+            keyboard_ok = interception_ctrl.discover_keyboard_device(timeout_ms=10000)
+            if not keyboard_ok:
+                logger.write("[Interception] WARNING: Keyboard device not discovered.\n")
+
+            mouse_ok = interception_ctrl.discover_mouse_device()
+            if not mouse_ok:
+                logger.write("[Interception] WARNING: Mouse device not discovered.\n")
+
+            interception_ctrl.start_passthrough()
+            logger.write("[Interception] Passthrough started.\n")
+
+        except Exception as e:
+            logger.write(f"[Interception] Initialization failed: {e}\n")
+            logger.write(f"[Interception] {traceback.format_exc()}\n")
+            logger.write("[Interception] Continuing without Interception input.\n")
+
         logger.write(f"Starting AgentServer with identifier: {identifier}\n")
 
         success = AgentServer.start_up(identifier)
@@ -140,6 +196,12 @@ def main():
         logger.close()
         sys.exit(1)
     finally:
+        if interception_ctrl is not None:
+            try:
+                interception_ctrl.shutdown()
+                logger.write("[Interception] Cleaned up.\n")
+            except Exception:
+                pass
         logger.close()
 
 

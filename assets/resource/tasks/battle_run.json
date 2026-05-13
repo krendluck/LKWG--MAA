@@ -46,8 +46,11 @@
                     "label": "点击脱离",
                     "pipeline_override": {
                         "Battle_RunEntry": {
-                            "action": "Click",
-                            "target": true
+                            "action": "Custom",
+                            "custom_action": "InterceptionInput",
+                            "custom_action_param": {
+                                "type": "click_target"
+                            }
                         }
                     }
                 },
@@ -56,8 +59,12 @@
                     "label": "按键 ESC",
                     "pipeline_override": {
                         "Battle_RunEntry": {
-                            "action": "ClickKey",
-                            "key": 27
+                            "action": "Custom",
+                            "custom_action": "InterceptionInput",
+                            "custom_action_param": {
+                                "type": "click_key",
+                                "key": 27
+                            }
                         }
                     }
                 }

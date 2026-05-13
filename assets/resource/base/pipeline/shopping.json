@@ -7,9 +7,13 @@
     },
     "MapTeleport_MainLoop": {
         "recognition": "DirectHit",
-        "action": "LongPressKey",
-        "key": 9,
-        "duration": 500,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "long_press_key",
+            "key": 9,
+            "duration": 500
+        },
         "post_delay": 500,
         "max_hit": 3,
         "next": ["MapTeleport_VerifyMap"]
@@ -32,15 +36,23 @@
         "roi": [87, 147, 33, 34],
         "timeout": 7000,
         "rate_limit": 1000,
-        "action": "Click",
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_target"
+        },
         "post_delay": 500,
         "next": ["MapTeleport_FindSecondaryIcon"],
         "on_error": ["MapTeleport_FallbackClickTeleportIcon", "[JumpBack]MapTeleport_JumpBack"]
     },
     "MapTeleport_FallbackClickTeleportIcon": {
         "recognition": "DirectHit",
-        "action": "Click",
-        "target": [103, 164],
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click",
+            "target": [103, 164]
+        },
         "post_delay": 500,
         "next": ["MapTeleport_FindSecondaryIcon"]
     },
@@ -50,15 +62,23 @@
         "roi": [147, 196, 24, 25],
         "timeout": 7000,
         "rate_limit": 1000,
-        "action": "Click",
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_target"
+        },
         "post_delay": 500,
         "next": ["MapTeleport_FindTransport"],
         "on_error": ["MapTeleport_FallbackClickSecondaryIcon", "[JumpBack]MapTeleport_JumpBack"]
     },
     "MapTeleport_FallbackClickSecondaryIcon": {
         "recognition": "DirectHit",
-        "action": "Click",
-        "target": [159, 208],
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click",
+            "target": [159, 208]
+        },
         "post_delay": 500,
         "next": ["MapTeleport_FindTransport"]
     },
@@ -68,15 +88,23 @@
         "expected": ["传送"],
         "timeout": 5000,
         "rate_limit": 1000,
-        "action": "Click",
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_target"
+        },
         "post_delay": 500,
         "next": ["MapTeleport_WaitLanding"],
         "on_error": ["MapTeleport_FallbackClickTransport", "[JumpBack]MapTeleport_JumpBack"]
     },
     "MapTeleport_FallbackClickTransport": {
         "recognition": "DirectHit",
-        "action": "Click",
-        "target": [1022, 677],
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click",
+            "target": [1022, 677]
+        },
         "post_delay": 5000,
         "next": ["MapTeleport_WaitEnter"]
     },
@@ -120,15 +148,23 @@
     },
     "MapTeleport_PressF": {
         "recognition": "DirectHit",
-        "action": "ClickKey",
-        "key": 70,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_key",
+            "key": 70
+        },
         "post_delay": 500,
         "next": ["Center_Click"]
     },
     "Center_Click":{
         "recognition": "DirectHit",
-        "action": "Click",
-        "target": [640, 360],
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click",
+            "target": [640, 360]
+        },
         "post_delay": 500,
         "next": ["MapTeleport_FindShop"]
     },
@@ -148,9 +184,13 @@
     },
     "MapTeleport_Press1": {
         "recognition": "DirectHit",
-        "action": "LongPressKey",
-        "key": 49,
-        "duration": 300,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "long_press_key",
+            "key": 49,
+            "duration": 300
+        },
         "post_delay": 1000,
         "next": ["MapTeleport_BuyLoop"]
     },
@@ -165,14 +205,22 @@
     },
     "MapTeleport_PressEsc": {
         "recognition": "DirectHit",
-        "action": "ClickKey",
-        "key": 27,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_key",
+            "key": 27
+        },
         "post_delay": 1000
     },
     "MapTeleport_WalkForward_KeyDown": {
         "recognition": "DirectHit",
-        "action": "KeyDown",
-        "key": 87,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "key_down",
+            "key": 87
+        },
         "next": ["MapTeleport_WalkForward_Wait"]
     },
     "MapTeleport_WalkForward_Wait": {
@@ -183,8 +231,12 @@
     },
     "MapTeleport_WalkForward_KeyUp": {
         "recognition": "DirectHit",
-        "action": "KeyUp",
-        "key": 87,
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "key_up",
+            "key": 87
+        },
         "post_delay": 1000
     }
 }
