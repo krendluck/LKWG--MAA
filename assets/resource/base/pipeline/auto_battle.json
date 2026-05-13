@@ -49,8 +49,7 @@
         "expected": ["确认"],
         "action": "DoNothing",
         "timeout": 15000,
-        "next": "AutoBattle_Done",
-        "on_error": "AutoBattle_Done"
+        "next": "AutoBattle_Done"
     },
     "AutoBattle_WaitBackpackR": {
         "recognition": "OCR",
