@@ -60,6 +60,6 @@
         "resource/tasks/stone_mine_pet.json",
         "resource/tasks/screenshot.json",
         "resource/tasks/shopping.json",
-        "resource/tasks/test.json"
+        "resource/tasks/auto_battle.json"
     ]
 }
