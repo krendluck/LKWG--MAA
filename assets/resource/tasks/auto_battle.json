@@ -4,13 +4,64 @@
             "name": "自动战斗",
             "entry": "AutoBattle_Entry",
             "option": [
-                "技能顺序",
-                "使用印记"
+                "战斗类型",
+                "技能顺序"
             ],
             "group": ["battle"]
         }
     ],
     "option": {
+        "战斗类型": {
+            "type": "select",
+            "default_case": "legendary",
+            "cases": [
+                {
+                    "name": "legendary",
+                    "label": "传说精灵",
+                    "pipeline_override": {
+                        "AutoBattle_BattleEndCheck": {
+                            "roi": [719, 582, 44, 21],
+                            "expected": ["确认"]
+                        },
+                        "AutoBattle_UseMark": {
+                            "attach": {
+                                "use_mark": "true"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "boss",
+                    "label": "精灵首领",
+                    "pipeline_override": {
+                        "AutoBattle_BattleEndCheck": {
+                            "roi": [719, 582, 44, 21],
+                            "expected": ["确认"]
+                        },
+                        "AutoBattle_UseMark": {
+                            "attach": {
+                                "use_mark": "false"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "rare",
+                    "label": "稀兽花种",
+                    "pipeline_override": {
+                        "AutoBattle_BattleEndCheck": {
+                            "roi": [1230, 673, 14, 11],
+                            "expected": ["w"]
+                        },
+                        "AutoBattle_UseMark": {
+                            "attach": {
+                                "use_mark": "false"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
         "技能顺序": {
             "type": "input",
             "inputs": [
@@ -30,34 +81,6 @@
                     }
                 }
             }
-        },
-        "使用印记": {
-            "type": "select",
-            "default_case": "不使用",
-            "cases": [
-                {
-                    "name": "不使用",
-                    "label": "不使用",
-                    "pipeline_override": {
-                        "AutoBattle_UseMark": {
-                            "attach": {
-                                "use_mark": "false"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "使用",
-                    "label": "使用",
-                    "pipeline_override": {
-                        "AutoBattle_UseMark": {
-                            "attach": {
-                                "use_mark": "true"
-                            }
-                        }
-                    }
-                }
-            ]
         }
     }
 }

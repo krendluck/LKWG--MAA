@@ -30,7 +30,8 @@
         "action": "Custom",
         "custom_action": "AutoBattleAct",
         "post_delay": 1500,
-        "next": "AutoBattle_WaitSkill1"
+        "next": "AutoBattle_WaitSkill1",
+        "on_error": "AutoBattle_BattleEndCheck"
     },
     "AutoBattle_CheckBattleEnd": {
         "recognition": "OCR",
@@ -75,5 +76,18 @@
         "custom_action": "AutoBattleUseMarkAct",
         "post_delay": 1000,
         "attach": {"use_mark": true}
+    },
+    "Battle_Esc":{
+        "recognition": "TemplateMatch",
+        "template": ["Battle/Flag.png"],
+        "roi": [1016, 645, 20, 20],
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_key",
+            "key": 27
+        },
+        "post_delay": 300,
+        "timeout": -1
     }
 }
