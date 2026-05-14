@@ -1,0 +1,67 @@
+{
+    "DailyClaim_Entry": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_key",
+            "key": 112
+        },
+        "post_delay": 1000,
+        "next": "DailyClaim_WaitPage"
+    },
+    "DailyClaim_WaitPage": {
+        "recognition": "OCR",
+        "roi": [917, 665, 86, 24],
+        "expected": ["通行证"],
+        "action": "DoNothing",
+        "post_delay": 500,
+        "timeout": 5000,
+        "next": "DailyClaim_CheckRedDot",
+        "on_error": "DailyClaim_Done"
+    },
+    "DailyClaim_CheckRedDot": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "DailyClaimRedDotAct",
+        "post_delay": 500,
+        "next": "DailyClaim_WaitAllClaim"
+    },
+    "DailyClaim_WaitAllClaim": {
+        "recognition": "OCR",
+        "roi": [917, 665, 86, 24],
+        "expected": ["全部领取"],
+        "action": "DoNothing",
+        "post_delay": 300,
+        "timeout": 5000,
+        "next": "DailyClaim_AllClaim",
+        "on_error": "DailyClaim_Done"
+    },
+    "DailyClaim_AllClaim": {
+        "recognition": "OCR",
+        "roi": [917, 665, 86, 24],
+        "expected": ["全部领取"],
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_target"
+        },
+        "post_delay": 500,
+        "next": "DailyClaim_Confirm"
+    },
+    "DailyClaim_Confirm": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "timeout": -1
+    },
+    "DailyClaim_Done": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "InterceptionInput",
+        "custom_action_param": {
+            "type": "click_key",
+            "key": 112
+        },
+        "post_delay": 500
+    }
+}

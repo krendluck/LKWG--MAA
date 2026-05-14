@@ -4,6 +4,7 @@ ACTION_MODULES = (
     "general",
     "auto_launch",
     "auto_battle",
+    "daily_claim",
     "focus_energy",
     "release_pet",
     "stone_detect",

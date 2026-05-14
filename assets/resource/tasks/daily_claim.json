@@ -1,0 +1,10 @@
+{
+    "task": [
+        {
+            "name": "每日领取",
+            "entry": "DailyClaim_Entry",
+            "group": ["daily"]
+        }
+    ],
+    "option": {}
+}
