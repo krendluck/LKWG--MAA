@@ -13,7 +13,6 @@ ACTION_MODULES = (
     "stone_mine",
     "map_teleport",
     "interception",
-    "pollution_battle",
 )
 
 

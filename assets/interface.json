@@ -62,7 +62,6 @@
         "resource/tasks/shopping.json",
         "resource/tasks/daily_claim.json",
         "resource/tasks/boss_battle.json",
-        "resource/tasks/rare_beast.json",
-        "resource/tasks/pollution_battle.json"
+        "resource/tasks/rare_beast.json"
     ]
 }
