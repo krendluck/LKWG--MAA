@@ -1,0 +1,9 @@
+{
+    "PollutionBattle_Cycle": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "PollutionBattleCycleAct",
+        "post_delay": 500,
+        "next": "PollutionBattle_Cycle"
+    }
+}
